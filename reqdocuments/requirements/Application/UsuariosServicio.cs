@@ -15,7 +15,22 @@ namespace requirements.Application
 
         public async Task<Usuarios> GetUsuario(int id) => await _usuariosRepository.GetUsuario(id);
         public async Task<IEnumerable<Usuarios>> GetUsuarios() => await _usuariosRepository.GetUsuarios();
-        public async Task<Unit> AddUsuario(Usuarios usuario) => await _usuariosRepository.AddUsuario(usuario);
+        public async Task<Unit> AddUsuario(Usuarios usuario)
+        {
+            usuario.Password = EncryptPassword(usuario.Password);
+            var usuarioDto = new Usuarios
+            {
+                Nombre = usuario.Nombre,
+                UserName = usuario.UserName,
+                Password = usuario.Password
+            };
+            return await _usuariosRepository.AddUsuario(usuarioDto);
+        }
+
+        private string EncryptPassword(string password)
+        {
+            return BCrypt.Net.BCrypt.HashPassword(password);
+        }
     }
 
 }

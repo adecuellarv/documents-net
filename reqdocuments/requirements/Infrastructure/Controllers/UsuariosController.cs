@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using requirements.Application;
 using requirements.Domain.Entities;
+using requirements.Infrastructure.Data.Queries;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -39,12 +40,18 @@ namespace requirements.Infrastructure.Controllers
         [HttpPost]
         public async Task<ActionResult<Unit>> CreateUsuario([FromBody] Usuarios data)
         {
-            if (data == null)
+            try
             {
-                return BadRequest("Usario no puede ser nulo");
+                return Ok(await _services.AddUsuario(data));
             }
-
-            return Ok(await _services.AddUsuario(data));
+            catch (CustomException ex)
+            {
+                return StatusCode(ex.ErrorCode, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "Error interno del servidor." });
+            }
         }
     }
 }
