@@ -8,12 +8,10 @@ namespace requirements.Infrastructure.Data
 {
     public class UsuariosRepository : IUsuariosRepository
     {
-        private readonly IMediator _mediator;
         private readonly UsuariosQueries _usuariosQueries;
 
-        public UsuariosRepository(IMediator mediator, IDbConnection dbConnection)
+        public UsuariosRepository(IDbConnection dbConnection)
         {
-            _mediator = mediator;
             _usuariosQueries = new UsuariosQueries(dbConnection);
         }
 
@@ -27,9 +25,9 @@ namespace requirements.Infrastructure.Data
             return await _usuariosQueries.GetUsuarioById(id);
         }
 
-        public async Task AddUsuario(Usuarios usuario)
+        public async Task<Unit> AddUsuario(Usuarios usuario)
         {
-            await _usuariosQueries.AddUsuario(usuario);
+            return await _usuariosQueries.AddUsuario(usuario);
         }
     }
 }

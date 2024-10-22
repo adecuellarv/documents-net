@@ -1,4 +1,5 @@
-﻿using requirements.Domain.Entities;
+﻿using MediatR;
+using requirements.Domain.Entities;
 
 namespace requirements.Domain.Interfaces
 {
@@ -6,6 +7,6 @@ namespace requirements.Domain.Interfaces
     {
         Task<IEnumerable<Usuarios>> GetUsuarios();
         Task<Usuarios> GetUsuario(int id);
-        Task AddUsuario(Usuarios usuarios);
+        Task<Unit> AddUsuario(Usuarios usuarios);
     }
 }

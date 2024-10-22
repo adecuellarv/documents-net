@@ -1,4 +1,5 @@
-﻿using requirements.Domain.Entities;
+﻿using MediatR;
+using requirements.Domain.Entities;
 using requirements.Domain.Interfaces;
 
 namespace requirements.Application
@@ -13,8 +14,8 @@ namespace requirements.Application
         }
 
         public async Task<Usuarios> GetUsuario(int id) => await _usuariosRepository.GetUsuario(id);
-        public async Task<IEnumerable<Usuarios>> GetAllUsuarios() => await _usuariosRepository.GetUsuarios();
-        public async Task AddUsuario(Usuarios usuario) => await _usuariosRepository.AddUsuario(usuario);
+        public async Task<IEnumerable<Usuarios>> GetUsuarios() => await _usuariosRepository.GetUsuarios();
+        public async Task<Unit> AddUsuario(Usuarios usuario) => await _usuariosRepository.AddUsuario(usuario);
     }
 
 }

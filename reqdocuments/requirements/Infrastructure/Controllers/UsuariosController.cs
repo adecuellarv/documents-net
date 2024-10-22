@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using requirements.Application;
+using requirements.Domain.Entities;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,36 +11,40 @@ namespace requirements.Infrastructure.Controllers
     [ApiController]
     public class UsuariosController : ControllerBase
     {
+        private readonly UsuariosService _services;
+        
+        public UsuariosController(UsuariosService services)
+        {
+            _services = services;
+        }
+
         // GET: api/<UsuariosController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<ActionResult<List<Usuarios>>> GetUsuarios()
         {
-            return new string[] { "value1", "value2" };
+            var usuarios = await _services.GetUsuarios();
+            return Ok(usuarios);
         }
 
         // GET api/<UsuariosController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult<Usuarios>> GetUsuarioById(int id)
         {
-            return "value";
+            var usuario = await _services.GetUsuario(id);
+            if (usuario == null) return NotFound();
+            return Ok(usuario);
         }
 
         // POST api/<UsuariosController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult<Unit>> CreateUsuario([FromBody] Usuarios data)
         {
-        }
+            if (data == null)
+            {
+                return BadRequest("Usario no puede ser nulo");
+            }
 
-        // PUT api/<UsuariosController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<UsuariosController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return Ok(await _services.AddUsuario(data));
         }
     }
 }

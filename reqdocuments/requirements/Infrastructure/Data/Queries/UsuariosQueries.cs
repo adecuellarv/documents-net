@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using MediatR;
 using requirements.Domain.Entities;
 using System.Data;
 
@@ -15,19 +16,19 @@ namespace requirements.Infrastructure.Data.Queries
 
         public async Task<IEnumerable<Usuarios>> GetAllUsuarios()
         {
-            const string query = "SELECT * FROM Usuarios";
+            const string query = "SELECT usuarioid, nombre, username, password, fecharegistro FROM public.usuarios";
             return await _dbConnection.QueryAsync<Usuarios>(query);
         }
 
         public async Task<Usuarios> GetUsuarioById(int id)
         {
-            const string query = "SELECT * FROM Usuarios WHERE Id = @Id";
+            const string query = "SELECT usuarioid, nombre, username, password, fecharegistro FROM public.usuarios WHERE usuarioid = @Id";
             return await _dbConnection.QuerySingleOrDefaultAsync<Usuarios>(query, new { Id = id });
         }
 
-        public async Task AddUsuario(Usuarios usuario)
+        public async Task<Unit> AddUsuario(Usuarios usuario)
         {
-            const string query = "SELECT insertar_usuario(@Nombre, @UserName, @Password)";
+            const string query = "SELECT public.insertar_usuario(@Nombre, @UserName, @Password)";
             var parameters = new
             {
                 Nombre = usuario.Nombre,
@@ -35,6 +36,8 @@ namespace requirements.Infrastructure.Data.Queries
                 Password = usuario.Password
             };
             await _dbConnection.ExecuteAsync(query, parameters);
+
+            return Unit.Value;
         }
 
     }
