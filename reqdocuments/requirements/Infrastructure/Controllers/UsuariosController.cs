@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using requirements.Application;
+using requirements.Application.DTOs;
 using requirements.Domain.Entities;
 using requirements.Infrastructure.Data.Queries;
 
@@ -29,13 +30,17 @@ namespace requirements.Infrastructure.Controllers
 
         // GET api/<UsuariosController>/login
         [HttpGet("login")]
-        public async Task<ActionResult<Usuarios>> GetUsuarioByCredentials(string userName, string password)
+        public async Task<ActionResult<UsuarioLoginDto>> GetUsuarioByCredentials(string userName, string password)
         {
             try
             {
                 var usuario = await _services.GetUsuario(userName, password);
                 if (usuario == null) return StatusCode(401, new { error = "No existe usuario" });
-                return Ok(usuario);
+                else
+                {
+                    Response.Headers.Add("Authorization", $"Bearer {usuario.Token}");
+                    return Ok(usuario);
+                }
             }
             catch (CustomException ex)
             {
