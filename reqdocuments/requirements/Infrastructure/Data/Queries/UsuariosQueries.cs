@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using MediatR;
 using Npgsql;
+using requirements.Application.DTOs;
 using requirements.Domain.Entities;
 using System.Data;
 
@@ -15,16 +16,16 @@ namespace requirements.Infrastructure.Data.Queries
             _dbConnection = dbConnection;
         }
 
-        public async Task<IEnumerable<Usuarios>> GetAllUsuarios()
+        public async Task<IEnumerable<UsuariosDto>> GetAllUsuarios()
         {
-            const string query = "SELECT usuarioid, nombre, username, password, fecharegistro FROM public.usuarios";
-            return await _dbConnection.QueryAsync<Usuarios>(query);
+            const string query = "SELECT usuarioid, nombre, username FROM public.usuarios";
+            return await _dbConnection.QueryAsync<UsuariosDto>(query);
         }
 
-        public async Task<Usuarios> GetUsuarioById(int id)
+        public async Task<Usuarios> GetUsuarioByCredentials(string username)
         {
-            const string query = "SELECT usuarioid, nombre, username, password, fecharegistro FROM public.usuarios WHERE usuarioid = @Id";
-            return await _dbConnection.QuerySingleOrDefaultAsync<Usuarios>(query, new { Id = id });
+            const string query = "SELECT usuarioid, nombre, username, password FROM public.usuarios WHERE username = @username";
+            return await _dbConnection.QuerySingleOrDefaultAsync<Usuarios>(query, new { username = username });
         }
 
         public async Task<Unit> AddUsuario(Usuarios usuario)

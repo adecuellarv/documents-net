@@ -27,13 +27,24 @@ namespace requirements.Infrastructure.Controllers
             return Ok(usuarios);
         }
 
-        // GET api/<UsuariosController>/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Usuarios>> GetUsuarioById(int id)
+        // GET api/<UsuariosController>/login
+        [HttpGet("login")]
+        public async Task<ActionResult<Usuarios>> GetUsuarioByCredentials(string userName, string password)
         {
-            var usuario = await _services.GetUsuario(id);
-            if (usuario == null) return NotFound();
-            return Ok(usuario);
+            try
+            {
+                var usuario = await _services.GetUsuario(userName, password);
+                if (usuario == null) return StatusCode(401, new { error = "No existe usuario" });
+                return Ok(usuario);
+            }
+            catch (CustomException ex)
+            {
+                return StatusCode(ex.ErrorCode, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "Error interno del servidor." });
+            }
         }
 
         // POST api/<UsuariosController>

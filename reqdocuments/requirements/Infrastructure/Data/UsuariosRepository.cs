@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using requirements.Application.DTOs;
 using requirements.Domain.Entities;
 using requirements.Domain.Interfaces;
 using requirements.Infrastructure.Data.Queries;
@@ -15,14 +16,14 @@ namespace requirements.Infrastructure.Data
             _usuariosQueries = new UsuariosQueries(dbConnection);
         }
 
-        public async Task<IEnumerable<Usuarios>> GetUsuarios()
+        public async Task<IEnumerable<UsuariosDto>> GetUsuarios()
         {
             return await _usuariosQueries.GetAllUsuarios();
         }
 
-        public async Task<Usuarios> GetUsuario(int id)
+        public async Task<Usuarios> GetUsuario(string username, string password)
         {
-            return await _usuariosQueries.GetUsuarioById(id);
+            return await _usuariosQueries.GetUsuarioByCredentials(username);
         }
 
         public async Task<Unit> AddUsuario(Usuarios usuario)
