@@ -20,6 +20,12 @@ namespace requirements.Application
 
         public async Task<Unit> AddDocumento(Documentos documentos, string scheme, string host, IFormFile archivo)
         {
+            const long maxFileSize = 256 * 1024 * 1024; // 256 MB
+            if (archivo.Length > maxFileSize)
+            {
+                throw new CustomException(401, "El tamaño del archivo no puede ser mayor a 256 MB.");
+            }
+
             var todayDate = DateTime.Now.ToString("yyyyMMdd");
             var extension = Path.GetExtension(archivo.FileName);
             var urlFile = $"{scheme}://{host}/uploads/{todayDate}{extension}";
@@ -37,7 +43,6 @@ namespace requirements.Application
                 await archivo.CopyToAsync(stream);
             }
 
-
             var documentosDto = new Documentos
             {
                 RequisitoId = documentos.RequisitoId,
@@ -47,6 +52,7 @@ namespace requirements.Application
             };
             return await _documentosRepository.AddDocumento(documentosDto, scheme, host, archivo);
         }
+
 
         public async Task<Unit> DeleteDocumento(int documentId)
         {
@@ -62,9 +68,40 @@ namespace requirements.Application
             return await _documentosRepository.GetDocumentos();
         }
 
-        public async Task<Unit> UpdateDocumento(int id, Documentos documentos)
+        public async Task<Unit> UpdateDocumento(int id, Documentos documentos, string scheme, string host, IFormFile archivo)
         {
-            return await _documentosRepository.UpdateDocumento(id, documentos);
+            const long maxFileSize = 256 * 1024 * 1024; // 256 MB
+            if (archivo.Length > maxFileSize)
+            {
+                throw new CustomException(401, "El tamaño del archivo no puede ser mayor a 256 MB.");
+            }
+
+            var todayDate = $"archivo_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}";
+            var extension = Path.GetExtension(archivo.FileName);
+            var urlFile = $"{scheme}://{host}/uploads/{todayDate}{extension}";
+
+            var rutaLocal = Path.Combine("wwwroot", "uploads");
+
+            if (!Directory.Exists(rutaLocal))
+            {
+                Directory.CreateDirectory(rutaLocal);
+            }
+
+            var rutaArchivo = Path.Combine(rutaLocal, $"{todayDate}{extension}");
+            using (var stream = new FileStream(rutaArchivo, FileMode.Create))
+            {
+                await archivo.CopyToAsync(stream);
+            }
+
+            var documentosDto = new Documentos
+            {
+                RequisitoId = documentos.RequisitoId,
+                SolicitanteId = documentos.SolicitanteId,
+                Url = urlFile,
+                UsuarioRegistro = documentos.UsuarioRegistro
+            };
+            return await _documentosRepository.UpdateDocumento(id, documentosDto, scheme, host, archivo);
         }
+
     }
 }

@@ -1,5 +1,7 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using requirements.Application;
 using requirements.Domain.Entities;
 using requirements.Infrastructure.Data.Queries;
@@ -8,6 +10,7 @@ using requirements.Infrastructure.Data.Queries;
 
 namespace requirements.Infrastructure.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class DocumentosController : ControllerBase
@@ -65,11 +68,18 @@ namespace requirements.Infrastructure.Controllers
 
         // PUT api/<DocumentosController>/5
         [HttpPut("{id}")]
-        public async Task<ActionResult<Unit>> UpdateDocumento(int id, [FromBody] Documentos data)
+        public async Task<ActionResult<Unit>> UpdateDocumento(int id, [FromForm] Documentos documentos, [FromForm] IFormFile archivo)
         {
             try
             {
-                return Ok(await _documentosServicio.UpdateDocumento(id, data));
+                if (documentos == null || archivo == null)
+                {
+                    return BadRequest("Los datos son inválidos.");
+                }
+
+                var scheme = Request.Scheme;
+                var host = Request.Host.Value;
+                return Ok(await _documentosServicio.UpdateDocumento(id, documentos, scheme, host, archivo));
             }
             catch (CustomException ex)
             {

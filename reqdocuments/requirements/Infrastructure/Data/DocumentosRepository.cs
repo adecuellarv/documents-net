@@ -35,7 +35,7 @@ namespace requirements.Infrastructure.Data
             return await _documentosQueries.GetDocumentos();
         }
 
-        public async Task<Unit> UpdateDocumento(int id, Documentos documentos)
+        public async Task<Unit> UpdateDocumento(int id, Documentos documentos, string scheme, string host, IFormFile archivo)
         {
             return await _documentosQueries.UpdateDocumento(id, documentos);
         }
