@@ -44,7 +44,29 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+// Configurar servicios
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost5173",
+        builder => builder.WithOrigins("http://localhost:5173")
+                          .AllowAnyMethod()
+                          .AllowAnyHeader());
+});
+
+// Agregar servicios de controladores
+builder.Services.AddControllers();
+
 var app = builder.Build();
+
+// Configurar el middleware
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+
+// Usar CORS
+app.UseCors("AllowLocalhost5173");
+app.UseRouting();
 
 // Configure the HTTP request pipeline.
 app.UseAuthentication();

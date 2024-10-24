@@ -30,7 +30,7 @@ namespace requirements.Infrastructure.Controllers
 
         // GET api/<UsuariosController>/login
         [HttpGet("login")]
-        public async Task<ActionResult<UsuarioLoginDto>> GetUsuarioByCredentials(string userName, string password)
+        public async Task<ActionResult<UsuariosDto>> GetUsuarioByCredentials(string userName, string password)
         {
             try
             {
@@ -38,8 +38,15 @@ namespace requirements.Infrastructure.Controllers
                 if (usuario == null) return StatusCode(401, new { error = "No existe usuario" });
                 else
                 {
-                    Response.Headers.Add("Authorization", $"Bearer {usuario.Token}");
-                    return Ok(usuario);
+                    Response.Headers.Add("Authorization", $"{usuario.Token}");
+                    Response.Headers.Add("Access-Control-Expose-Headers", "Authorization");
+
+                    return Ok(new UsuariosDto
+                    {
+                        UsuarioId = usuario.UsuarioId,
+                        Nombre = usuario.Nombre,
+                        UserName = usuario.UserName
+                    });
                 }
             }
             catch (CustomException ex)
