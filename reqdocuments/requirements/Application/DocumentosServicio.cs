@@ -58,7 +58,7 @@ namespace requirements.Application
         {
             return await _documentosRepository.DeleteDocumento(documentId);
         }
-        public async Task<Documentos> GetDocumento(int documentId)
+        public async Task<IEnumerable<Documentos>> GetDocumento(int documentId)
         {
             return await _documentosRepository.GetDocumento(documentId);
         }

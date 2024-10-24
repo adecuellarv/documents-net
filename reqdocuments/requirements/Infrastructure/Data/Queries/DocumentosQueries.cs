@@ -52,11 +52,12 @@ namespace requirements.Infrastructure.Data.Queries
             return await _dbConnection.QuerySingleOrDefaultAsync<Unit>(query, new { id = documentId });
         }
 
-        public async Task<Documentos> GetDocumento(int documentId)
+        public async Task<IEnumerable<Documentos>> GetDocumento(int solicitanteId)
         {
-            const string query = "SELECT documentoid, requisitoid, solicitanteid, url, fecharegistro, usuarioregistro, fechamodificacion, usuariomodificacion FROM public.documentos WHERE documentoid = @id";
-            return await _dbConnection.QuerySingleOrDefaultAsync<Documentos>(query, new { id = documentId });
+            const string query = "SELECT documentoid, requisitoid, solicitanteid, url, fecharegistro, usuarioregistro, fechamodificacion, usuariomodificacion FROM public.documentos WHERE solicitanteid = @solicitanteId";
+            return await _dbConnection.QueryAsync<Documentos>(query, new { solicitanteId });
         }
+
 
         public async Task<IEnumerable<Documentos>> GetDocumentos()
         {

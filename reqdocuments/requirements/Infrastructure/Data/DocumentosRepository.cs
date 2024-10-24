@@ -25,7 +25,7 @@ namespace requirements.Infrastructure.Data
             return await _documentosQueries.DeleteDocumento(documentId);
         }
 
-        public async Task<Documentos> GetDocumento(int documentId)
+        public async Task<IEnumerable<Documentos>> GetDocumento(int documentId)
         {
             return await _documentosQueries.GetDocumento(documentId);
         }

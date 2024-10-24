@@ -30,7 +30,7 @@ namespace requirements.Infrastructure.Controllers
 
         // GET api/<DocumentosController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Documentos>> GetDocumento(int id)
+        public async Task<ActionResult<IEnumerable<Documentos>>> GetDocumento(int id)
         {
             var documentos = await _documentosServicio.GetDocumento(id);
             if (documentos == null)
