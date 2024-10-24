@@ -24,7 +24,7 @@ namespace requirements.Application
             const long maxFileSize = 256 * 1024 * 1024; // 256 MB
             if (archivo.Length > maxFileSize)
             {
-                throw new CustomException(401, "El tamaño del archivo no puede ser mayor a 256 MB.");
+                throw new CustomException(413, "El tamaño del archivo no puede ser mayor a 256 MB.");
             }
 
             var todayDate = DateTime.Now.ToString("yyyyMMdd");
@@ -74,7 +74,7 @@ namespace requirements.Application
             const long maxFileSize = 256 * 1024 * 1024; // 256 MB
             if (archivo.Length > maxFileSize)
             {
-                throw new CustomException(401, "El tamaño del archivo no puede ser mayor a 256 MB.");
+                throw new CustomException(413, "El tamaño del archivo no puede ser mayor a 256 MB.");
             }
 
             var todayDate = $"archivo_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}";

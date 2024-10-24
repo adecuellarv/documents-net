@@ -2,6 +2,7 @@
 using requirements.Domain.Entities;
 using requirements.Domain.Interfaces;
 using requirements.Infrastructure.Data;
+using requirements.Infrastructure.Data.Queries;
 
 namespace requirements.Application
 {
@@ -24,7 +25,7 @@ namespace requirements.Application
                 return requisito;
             }
 
-            throw new Exception("Solicitante no encontrado");
+            throw new CustomException(404, "Solicitante no encontrado");
         }
 
         public async Task<Unit> AddRequisito(Requisitos requisitos)

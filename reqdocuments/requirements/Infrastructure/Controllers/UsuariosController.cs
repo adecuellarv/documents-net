@@ -35,7 +35,7 @@ namespace requirements.Infrastructure.Controllers
             try
             {
                 var usuario = await _services.GetUsuario(userName, password);
-                if (usuario == null) return StatusCode(401, new { error = "No existe usuario" });
+                if (usuario == null) return StatusCode(404, new { error = "No existe usuario" });
                 else
                 {
                     Response.Headers.Add("Authorization", $"{usuario.Token}");
