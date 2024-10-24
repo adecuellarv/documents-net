@@ -15,7 +15,7 @@ namespace requirements.Infrastructure.Data
             _requisitosQueries = new RequisitosQueries(dbConnection);
         }
 
-        public async Task<Unit> AddRequisito(Requesitos usuarios)
+        public async Task<Unit> AddRequisito(Requisitos usuarios)
         {
             return await _requisitosQueries.AddRequisito(usuarios);
         }
@@ -25,17 +25,17 @@ namespace requirements.Infrastructure.Data
             return await _requisitosQueries.DeleteRequisito(solicitanteId);
         }
 
-        public async Task<Requesitos> GetRequisito(int solicitanteId)
+        public async Task<Requisitos> GetRequisito(int solicitanteId)
         {
             return await _requisitosQueries.GetRequisito(solicitanteId);
         }
 
-        public async Task<IEnumerable<Requesitos>> GetRequisitos()
+        public async Task<IEnumerable<Requisitos>> GetRequisitos()
         {
             return await _requisitosQueries.GetRequisitos();
         }
 
-        public async Task<Unit> UpdateRequisito(int id, Requesitos usuarios)
+        public async Task<Unit> UpdateRequisito(int id, Requisitos usuarios)
         {
             return await _requisitosQueries.UpdateRequisito(id, usuarios);
         }

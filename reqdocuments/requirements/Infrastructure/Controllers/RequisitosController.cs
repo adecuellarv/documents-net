@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using requirements.Application;
 using requirements.Domain.Entities;
@@ -8,6 +9,7 @@ using requirements.Infrastructure.Data.Queries;
 
 namespace requirements.Infrastructure.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class RequisitosController : ControllerBase
@@ -19,7 +21,7 @@ namespace requirements.Infrastructure.Controllers
         }
         // GET: api/<RequisitosController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Requesitos>>> GetRequisitos()
+        public async Task<ActionResult<IEnumerable<Requisitos>>> GetRequisitos()
         {
             var requisitos = await _requisitosServicio.GetRequisitos();
             return Ok(requisitos);
@@ -27,7 +29,7 @@ namespace requirements.Infrastructure.Controllers
 
         // GET api/<RequisitosController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Requesitos>> GetRequisito(int id)
+        public async Task<ActionResult<Requisitos>> GetRequisito(int id)
         {
             try
             {
@@ -50,7 +52,7 @@ namespace requirements.Infrastructure.Controllers
 
         // POST api/<RequisitosController>
         [HttpPost]
-        public async Task<ActionResult<Unit>> AddRequisito([FromBody] Requesitos data)
+        public async Task<ActionResult<Unit>> AddRequisito([FromBody] Requisitos data)
         {
             try
             {
@@ -68,7 +70,7 @@ namespace requirements.Infrastructure.Controllers
 
         // PUT api/<RequisitosController>/5
         [HttpPut("{id}")]
-        public async Task<ActionResult<Unit>> UpdateRequisito(int id, [FromBody] Requesitos data)
+        public async Task<ActionResult<Unit>> UpdateRequisito(int id, [FromBody] Requisitos data)
         {
             try
             {

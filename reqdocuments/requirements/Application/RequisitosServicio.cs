@@ -14,9 +14,9 @@ namespace requirements.Application
             _requisitosRepository = requisitosRepository;
         }
 
-        public async Task<IEnumerable<Requesitos>> GetRequisitos() => await _requisitosRepository.GetRequisitos();
+        public async Task<IEnumerable<Requisitos>> GetRequisitos() => await _requisitosRepository.GetRequisitos();
 
-        public async Task<Requesitos> GetRequisito(int id)
+        public async Task<Requisitos> GetRequisito(int id)
         {
             var requisito = await _requisitosRepository.GetRequisito(id);
             if (requisito != null)
@@ -27,11 +27,11 @@ namespace requirements.Application
             throw new Exception("Solicitante no encontrado");
         }
 
-        public async Task<Unit> AddRequisito(Requesitos requisitos)
+        public async Task<Unit> AddRequisito(Requisitos requisitos)
         {
             return await _requisitosRepository.AddRequisito(requisitos);
         }
-        public async Task<Unit> UpdateRequisito(int id, Requesitos requisitos)
+        public async Task<Unit> UpdateRequisito(int id, Requisitos requisitos)
         {
             return await _requisitosRepository.UpdateRequisito(id, requisitos);
         }

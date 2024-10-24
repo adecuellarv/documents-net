@@ -14,7 +14,7 @@ namespace requirements.Infrastructure.Data.Queries
         {
             _dbConnection = dbConnection;
         }
-        public async Task<Unit> AddRequisito(Requesitos requesitos)
+        public async Task<Unit> AddRequisito(Requisitos requesitos)
         {
             try
             {
@@ -53,19 +53,19 @@ namespace requirements.Infrastructure.Data.Queries
             return await _dbConnection.QuerySingleOrDefaultAsync<Unit>(query, new { id = id });
         }
 
-        public async Task<Requesitos> GetRequisito(int id)
+        public async Task<Requisitos> GetRequisito(int id)
         {
             const string query = "SELECT requisitoid, nombre, extension, status, fecharegistro, usuarioregistro, fechamodificacion, usuariomodificacion FROM public.requisitos WHERE requisitoid = @id";
-            return await _dbConnection.QuerySingleOrDefaultAsync<Requesitos>(query, new { id = id });
+            return await _dbConnection.QuerySingleOrDefaultAsync<Requisitos>(query, new { id = id });
         }
 
-        public async Task<IEnumerable<Requesitos>> GetRequisitos()
+        public async Task<IEnumerable<Requisitos>> GetRequisitos()
         {
             const string query = "SELECT requisitoid, nombre, extension, status, fecharegistro, usuarioregistro, fechamodificacion, usuariomodificacion FROM public.requisitos";
-            return await _dbConnection.QueryAsync<Requesitos>(query);
+            return await _dbConnection.QueryAsync<Requisitos>(query);
         }
 
-        public async Task<Unit> UpdateRequisito(int id, Requesitos requesitos)
+        public async Task<Unit> UpdateRequisito(int id, Requisitos requesitos)
         {
             try
             {

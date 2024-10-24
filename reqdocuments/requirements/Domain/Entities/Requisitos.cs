@@ -1,6 +1,6 @@
 ﻿namespace requirements.Domain.Entities
 {
-    public class Requesitos
+    public class Requisitos
     {
         public int RequisitoId { get; set; }
         public string Nombre { get; set; }
