@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Configuration;
+using requirements.Application.DTOs;
 using requirements.Domain.Entities;
 using requirements.Domain.Interfaces;
 using requirements.Infrastructure.Data;
@@ -58,7 +59,7 @@ namespace requirements.Application
         {
             return await _documentosRepository.DeleteDocumento(documentId);
         }
-        public async Task<IEnumerable<Documentos>> GetDocumento(int documentId)
+        public async Task<IEnumerable<DocumentosDto>> GetDocumento(int documentId)
         {
             return await _documentosRepository.GetDocumento(documentId);
         }

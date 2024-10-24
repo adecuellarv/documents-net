@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using requirements.Application;
+using requirements.Application.DTOs;
 using requirements.Domain.Entities;
 using requirements.Infrastructure.Data.Queries;
 
@@ -30,7 +31,7 @@ namespace requirements.Infrastructure.Controllers
 
         // GET api/<DocumentosController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<Documentos>>> GetDocumento(int id)
+        public async Task<ActionResult<IEnumerable<DocumentosDto>>> GetDocumento(int id)
         {
             var documentos = await _documentosServicio.GetDocumento(id);
             if (documentos == null)

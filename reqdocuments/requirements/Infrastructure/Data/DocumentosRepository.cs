@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using requirements.Application.DTOs;
 using requirements.Domain.Entities;
 using requirements.Domain.Interfaces;
 using requirements.Infrastructure.Data.Queries;
@@ -25,7 +26,7 @@ namespace requirements.Infrastructure.Data
             return await _documentosQueries.DeleteDocumento(documentId);
         }
 
-        public async Task<IEnumerable<Documentos>> GetDocumento(int documentId)
+        public async Task<IEnumerable<DocumentosDto>> GetDocumento(int documentId)
         {
             return await _documentosQueries.GetDocumento(documentId);
         }

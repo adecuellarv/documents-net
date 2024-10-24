@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using MediatR;
 using Npgsql;
+using requirements.Application.DTOs;
 using requirements.Domain.Entities;
 using System.Data;
 
@@ -52,10 +53,11 @@ namespace requirements.Infrastructure.Data.Queries
             return await _dbConnection.QuerySingleOrDefaultAsync<Unit>(query, new { id = documentId });
         }
 
-        public async Task<IEnumerable<Documentos>> GetDocumento(int solicitanteId)
+        public async Task<IEnumerable<DocumentosDto>> GetDocumento(int solicitanteId)
         {
-            const string query = "SELECT documentoid, requisitoid, solicitanteid, url, fecharegistro, usuarioregistro, fechamodificacion, usuariomodificacion FROM public.documentos WHERE solicitanteid = @solicitanteId";
-            return await _dbConnection.QueryAsync<Documentos>(query, new { solicitanteId });
+            //const string query = "SELECT documentoid, requisitoid, solicitanteid, url, fecharegistro, usuarioregistro, fechamodificacion, usuariomodificacion FROM public.documentos WHERE solicitanteid = @solicitanteId";
+            const string query = "SELECT d.documentoid, d.requisitoid, d.solicitanteid, d.url, d.fecharegistro, d.usuarioregistro, d.fechamodificacion, d.usuariomodificacion, r.nombre AS RequistoName, r.extension AS RequistoExtension FROM public.documentos d JOIN public.requisitos r ON d.requisitoid = r.requisitoid WHERE d.solicitanteid = @solicitanteId;";
+            return await _dbConnection.QueryAsync<DocumentosDto>(query, new { solicitanteId });
         }
 
 
