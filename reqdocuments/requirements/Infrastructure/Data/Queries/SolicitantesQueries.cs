@@ -64,5 +64,39 @@ namespace requirements.Infrastructure.Data.Queries
             const string query = "DELETE FROM public.solicitantes WHERE solicitanteid = @id";
             return await _dbConnection.QuerySingleOrDefaultAsync<Unit>(query, new { id = id });
         }
+
+        public async Task<Unit> UpdateSolicitante(int id, Solicitantes solicitantes)
+        {
+            try
+            {
+                const string query = "UPDATE public.solicitantes SET Nombre = @Nombre, UsuarioModificacion = @UsuarioModificacion WHERE SolicitanteId = @SolicitanteId";
+                var parameters = new
+                {
+                    SolicitanteId = id,
+                    Nombre = solicitantes.Nombre,
+                    UsuarioModificacion = solicitantes.UsuarioRegistro
+                };
+                await _dbConnection.ExecuteAsync(query, parameters);
+
+                return Unit.Value;
+            }
+            catch (PostgresException ex)
+            {
+                if (ex.SqlState == "23505") // Error de duplicado
+                {
+                    throw new CustomException(500, ex.Message);
+                }
+                else
+                {
+                    throw new CustomException(409, ex.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new CustomException(409, ex.Message);
+            }
+        }
+
+
     }
 }

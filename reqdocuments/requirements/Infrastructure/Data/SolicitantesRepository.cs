@@ -33,5 +33,10 @@ namespace requirements.Infrastructure.Data
         {
             return await _solicitantesQueries.GetSolicitantes();
         }
+
+        public async Task<Unit> UpdateSolicitante(int id, Solicitantes solicitantes)
+        {
+            return await _solicitantesQueries.UpdateSolicitante(id, solicitantes);
+        }
     }
 }

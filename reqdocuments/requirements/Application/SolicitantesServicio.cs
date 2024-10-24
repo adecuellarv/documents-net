@@ -34,6 +34,11 @@ namespace requirements.Application
             return await _solicitantesRepository.AddSolicitante(solicitantes);
         }
 
+        public async Task<Unit> UpdateSolicitante(int id, Solicitantes solicitantes)
+        {
+            return await _solicitantesRepository.UpdateSolicitante(id, solicitantes);
+        }
+
         public async Task<Unit> DeleteSolicitante(int id)
         {
             return await _solicitantesRepository.DeleteSolicitante(id);
