@@ -15,7 +15,7 @@ namespace requirements.Infrastructure.Data
             _documentosQueries = new DocumentosQueries(dbConnection);
         }
 
-        public async Task<Unit> AddDocumento(Documentos documentos)
+        public async Task<Unit> AddDocumento(Documentos documentos, string scheme, string host, IFormFile archivo)
         {
             return await _documentosQueries.AddDocumento(documentos);
         }

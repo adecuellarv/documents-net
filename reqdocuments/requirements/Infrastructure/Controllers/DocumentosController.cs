@@ -39,11 +39,19 @@ namespace requirements.Infrastructure.Controllers
 
         // POST api/<DocumentosController>
         [HttpPost]
-        public async Task<ActionResult<Unit>> AddDocumento([FromBody] Documentos data)
+        public async Task<ActionResult<Unit>> AddDocumento([FromForm] Documentos documentos, [FromForm] IFormFile archivo)
         {
+            
             try
             {
-                return Ok(await _documentosServicio.AddDocumento(data));
+                if (documentos == null || archivo == null)
+                {
+                    return BadRequest("Los datos son inválidos.");
+                }
+
+                var scheme = Request.Scheme;
+                var host = Request.Host.Value;
+                return Ok(await _documentosServicio.AddDocumento(documentos, scheme, host, archivo));
             }
             catch (CustomException ex)
             {

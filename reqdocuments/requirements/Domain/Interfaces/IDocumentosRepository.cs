@@ -7,7 +7,7 @@ namespace requirements.Domain.Interfaces
     {
         Task<IEnumerable<Documentos>> GetDocumentos();
         Task<Documentos> GetDocumento(int documentId);
-        Task<Unit> AddDocumento(Documentos documentos);
+        Task<Unit> AddDocumento(Documentos documentos, string scheme, string host, IFormFile archivo);
         Task<Unit> UpdateDocumento(int id, Documentos documentos);
         Task<Unit> DeleteDocumento(int documentId);
     }

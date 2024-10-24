@@ -4,6 +4,8 @@ using requirements.Domain.Entities;
 using requirements.Domain.Interfaces;
 using requirements.Infrastructure.Data;
 using requirements.Infrastructure.Data.Queries;
+using System;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace requirements.Application
 {
@@ -16,9 +18,34 @@ namespace requirements.Application
             _documentosRepository = documentosRepository;
         }
 
-        public async Task<Unit> AddDocumento(Documentos documentos)
+        public async Task<Unit> AddDocumento(Documentos documentos, string scheme, string host, IFormFile archivo)
         {
-            return await _documentosRepository.AddDocumento(documentos);
+            var todayDate = DateTime.Now.ToString("yyyyMMdd");
+            var extension = Path.GetExtension(archivo.FileName);
+            var urlFile = $"{scheme}://{host}/uploads/{todayDate}{extension}";
+
+            var rutaLocal = Path.Combine("wwwroot", "uploads");
+
+            if (!Directory.Exists(rutaLocal))
+            {
+                Directory.CreateDirectory(rutaLocal);
+            }
+
+            var rutaArchivo = Path.Combine(rutaLocal, $"{todayDate}{extension}");
+            using (var stream = new FileStream(rutaArchivo, FileMode.Create))
+            {
+                await archivo.CopyToAsync(stream);
+            }
+
+
+            var documentosDto = new Documentos
+            {
+                RequisitoId = documentos.RequisitoId,
+                SolicitanteId = documentos.SolicitanteId,
+                Url = urlFile,
+                UsuarioRegistro = documentos.UsuarioRegistro
+            };
+            return await _documentosRepository.AddDocumento(documentosDto, scheme, host, archivo);
         }
 
         public async Task<Unit> DeleteDocumento(int documentId)

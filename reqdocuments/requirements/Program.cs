@@ -72,6 +72,10 @@ if (app.Environment.IsDevelopment())
 
 // Usar CORS
 app.UseCors("AllowLocalhost5173");
+
+// archivos estaticos
+app.UseStaticFiles(); 
+
 app.UseRouting();
 
 // Configure the HTTP request pipeline.
