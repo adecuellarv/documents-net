@@ -25,9 +25,11 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Progr
 
 // Registra UsuariosService
 builder.Services.AddScoped<UsuariosService>();
+builder.Services.AddScoped<SolicitantesServicio>();
 
 // Registra el repositorio
 builder.Services.AddScoped<IUsuariosRepository, UsuariosRepository>();
+builder.Services.AddScoped<ISolicitantesRepository, SolicitantesRepository>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
